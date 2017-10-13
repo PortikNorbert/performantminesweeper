@@ -51,7 +51,7 @@ var mineSweeper = (function(isPublic) {
 		getState, setFieldState,
 		formatTime, getClockTime, runClock, initClock,
 		getRandomNumberBetween, getMineIndexes,
-		createFields, generateFieldMap, setNeighboringMinesCount, setGameVariables, getSizes,
+		createFields, generateFieldMap, setGameVariables, getSizes,
 		resetGame, newGame, gameOver, isVictory, victory,
 		isExistingField, getNeighboringMines,
 		resolveField, resolveAllFields, revealField, toggleFlag, processRevealList,
@@ -338,26 +338,10 @@ var mineSweeper = (function(isPublic) {
 			scope.fieldMap[row][column] = {
 				flagged: false,
 				revealed: false,
-				mine: mineIndexes.has(i)
+				mine: mineIndexes.has(i),
+				neighborMines: getNeighboringMines([row, column], mineIndexes)
 			};
 
-		}
-	};
-
-	/**
-	 * Sets on each field's state the number of neighboring mines.
-	 * @alias setNeighboringMinesCount
-	 */
-	setNeighboringMinesCount = function() {
-		var rows = 1, columns = 1;
-
-		while (rows <= scope.nrOfRows) {
-			while(columns <= scope.nrOfColumns) {
-				getState([rows, columns]).neighborMines = getNeighboringMines([rows , columns]);
-				columns++;
-			}
-			columns = 1;
-			rows++;
 		}
 	};
 
@@ -370,8 +354,8 @@ var mineSweeper = (function(isPublic) {
 		if (scope.nrOfRows < 2) {
 			scope.nrOfRows = 2;
 			setInputValue('minesweeper-height', scope.nrOfRows);
-		} else if (scope.nrOfRows > 200) {
-			scope.nrOfRows = 200;
+		} else if (scope.nrOfRows > 2000) {
+			scope.nrOfRows = 2000;
 			setInputValue('minesweeper-height', scope.nrOfRows);
 		}
 
@@ -379,8 +363,8 @@ var mineSweeper = (function(isPublic) {
 		if (scope.nrOfColumns < 2) {
 			scope.nrOfColumns = 2;
 			setInputValue('minesweeper-width', scope.nrOfColumns);
-		} else if (scope.nrOfColumns > 200) {
-			scope.nrOfColumns = 200;
+		} else if (scope.nrOfColumns > 2000) {
+			scope.nrOfColumns = 2000;
 			setInputValue('minesweeper-width', scope.nrOfColumns);
 		}
 
@@ -428,7 +412,6 @@ var mineSweeper = (function(isPublic) {
 		setGameVariables();
 		createFields(mineFieldCt, getSizes());
 		generateFieldMap();
-		setNeighboringMinesCount();
 
 		initClock();
 	};
@@ -475,14 +458,16 @@ var mineSweeper = (function(isPublic) {
 	 * Tell the number of mines in the neighboring fields.
 	 * @alias getNeighboringMines
 	 * @param {array} mainCoords - The selected field's map to it's state in the field map.
+	 * @param {Set} mineIndexes - A set of numbers, each representing a single mine.
 	 * @returns {number} Returns the number of mines in the neighboring fields.
 	 */
-	getNeighboringMines = function(mainCoords) {
+	getNeighboringMines = function(mainCoords, mineIndexes) {
 		var mines = 0,
 			neighborIndexes = getNeighbors(mainCoords);
 
 		neighborIndexes.map(function(coord) {
-			mines += getState(coord).mine ? 1 : 0;
+			mines += mineIndexes.has(getFieldIndex(coord)) ? 1 : 0;
+			
 		});
 
 		return mines;
@@ -680,7 +665,6 @@ var mineSweeper = (function(isPublic) {
 	scope.isExistingField = isExistingField;
 	scope.getNeighbors = getNeighbors;
 	scope.getNeighboringMines = getNeighboringMines;
-	scope.setNeighboringMinesCount = setNeighboringMinesCount;
 	scope.gameOver = gameOver;
 	scope.revealField = revealField;
 	scope.setInputValue = setInputValue;

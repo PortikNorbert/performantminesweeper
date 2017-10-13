@@ -215,16 +215,6 @@
               
                 
                 <li><a
-                  href='#setneighboringminescount'
-                  class="">
-                  setNeighboringMinesCount
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#setgamevariables'
                   class="">
                   setGameVariables
@@ -1632,53 +1622,6 @@ There are several key variables accesible from outside of the methods:</p>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='setneighboringminescount'>
-      setNeighboringMinesCount
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Sets on each field's state the number of neighboring mines.</p>
-
-
-  <div class='pre p1 fill-light mt0'>setNeighboringMinesCount()</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
     <h3 class='fl m0' id='setgamevariables'>
       setGameVariables
     </h3>
@@ -1983,7 +1926,7 @@ There are several key variables accesible from outside of the methods:</p>
   <p>Tell the number of mines in the neighboring fields.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getNeighboringMines(mainCoords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  <div class='pre p1 fill-light mt0'>getNeighboringMines(mainCoords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, mineIndexes: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">Set</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
   
   
 
@@ -2002,6 +1945,15 @@ There are several key variables accesible from outside of the methods:</p>
           <div>
             <span class='code bold'>mainCoords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
 	    The selected field's map to it's state in the field map.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mineIndexes</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">Set</a>)</code>
+	    A set of numbers, each representing a single mine.
 
           </div>
           

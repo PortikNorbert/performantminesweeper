@@ -10,7 +10,6 @@ unit.test('Game reset', function(scope) {
 	scope.setGameVariables();
 	scope.generateFieldMap();
 	scope.createFields(unit.getMockDiv(), {mineField: 1000, field: 10});
-	scope.setNeighboringMinesCount();
 	scope.revealField([1,1]);
 	actionCheck = unit.checkIsGreater(scope.game.reveals, 0);
 
@@ -24,9 +23,9 @@ unit.test('Setting game variables', function(scope) {
 	scope.setGameVariables();
 	normalCheck = unit.checkEqual(scope.nrOfFields, 25);
 
-	unit.mockGameVariables(1500, 5, 7);
+	unit.mockGameVariables(2500, 5, 7);
 	scope.setGameVariables();
-	limitCheck = unit.checkEqual(scope.nrOfRows, 200);
+	limitCheck = unit.checkEqual(scope.nrOfRows, 2000);
 
 	return normalCheck && limitCheck;
 });
@@ -35,7 +34,7 @@ unit.test('Generating field map and fields', function(scope) {
 	scope.generateFieldMap();
 	scope.createFields(unit.getMockDiv(), {mineField: 1000, field: 10});
 
-	return unit.checkType(scope.fieldMap, 'object') && mockDiv.hasChildNodes();
+	return unit.checkType(scope.fieldMap, 'object') && unit.getMockDiv().hasChildNodes();
 });
 
 unit.test('Field map contains all the fields', function(scope) {
@@ -58,7 +57,7 @@ unit.test('Field map contains all the fields', function(scope) {
 		}
 	}
 
-	return unit.checkEqual(size, 1000);
+	return unit.checkEqual(size, 10000);
 });
 
 unit.test('The correct number of mines are generated', function(scope) {
@@ -138,10 +137,12 @@ unit.test('Finds the right number of mines at neighbors', function(scope) {
 	scope.resetGame(unit.getMockDiv());
 	scope.setGameVariables();
 	scope.generateFieldMap(unit.getMockDiv());
-	scope.setNeighboringMinesCount();
 	scope.getMineIndexes = originalMineGenerator;
 
-	return unit.checkEqual(scope.getNeighboringMines([2,2]), 0) && unit.checkEqual(scope.getNeighboringMines([5,4]), 4) && unit.checkEqual(scope.getNeighboringMines([7,7]), 2) && unit.checkEqual(scope.getNeighboringMines([2,5]), 1);
+	return unit.checkEqual(scope.getNeighboringMines([2,2], mockedMineGenerator()), 0)
+		&& unit.checkEqual(scope.getNeighboringMines([5,4], mockedMineGenerator()), 4)
+		&& unit.checkEqual(scope.getNeighboringMines([7,7], mockedMineGenerator()), 2)
+		&& unit.checkEqual(scope.getNeighboringMines([2,5], mockedMineGenerator()), 1);
 });
 
 unit.test('Blank field behavior', function(scope) {
